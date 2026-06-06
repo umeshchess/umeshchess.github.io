@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umesh Penkey — VLSI & Hardware Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#030810;
+  --surf:#070f1e;
+  --surf2:#0a1428;
+  --border:#13233a;
+  --border2:#1e3550;
+  --cyan:#00d4ff;
+  --cyan-dim:rgba(0,212,255,0.15);
+  --orange:#ff6b35;
+  --orange-dim:rgba(255,107,53,0.15);
+  --purple:#a78bfa;
+  --purple-dim:rgba(167,139,250,0.15);
+  --green:#10d98a;
+  --green-dim:rgba(16,217,138,0.15);
+  --txt:#a8c4de;
+  --txt-dim:#3d5e7a;
+  --txt-bright:#ddeeff;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  cursor:none;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(0,212,255,0.045) 1px,transparent 0);
+  background-size:28px 28px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Scanline overlay */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ─── CURSOR ─── */
+.cur-dot,.cur-ring{
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+}
+.cur-dot{
+  width:7px;height:7px;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan),0 0 16px rgba(0,212,255,0.4);
+  transition:width .15s,height .15s;
+}
+.cur-ring{
+  width:28px;height:28px;
+  border:1px solid rgba(0,212,255,0.35);
+  transition:all .12s ease;
+}
+body:has(a:hover) .cur-dot,
+body:has(button:hover) .cur-dot{width:11px;height:11px}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2.5rem;
+  background:rgba(3,8,16,0.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Orbitron',monospace;
+  font-size:1rem;font-weight:700;
+  color:var(--cyan);text-decoration:none;
+  letter-spacing:.1em;
+}
+.nav-logo em{color:var(--txt-bright);font-style:normal}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  color:var(--txt-dim);text-decoration:none;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.78rem;letter-spacing:.18em;
+  text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--cyan)}
+.nav-gh{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.38rem 1rem;
+  border:1px solid var(--border2);
+  background:transparent;color:var(--txt);
+  font-family:'Share Tech Mono',monospace;font-size:.75rem;
+  letter-spacing:.1em;text-decoration:none;
+  transition:all .2s;
+}
+.nav-gh:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,0.18)}
+.nav-gh svg{width:15px;height:15px;fill:currentColor}
+
+/* ─── HERO ─── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:7rem 2.5rem 4rem;
+  position:relative;z-index:1;
+}
+.hero-inner{
+  max-width:1140px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 300px;
+  gap:4rem;align-items:center;
+}
+.hero-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.72rem;color:var(--cyan);
+  letter-spacing:.35em;text-transform:uppercase;
+  margin-bottom:1.1rem;opacity:.85;
+  display:flex;align-items:center;gap:.75rem;
+}
+.hero-label::before{content:'▸';opacity:.6}
+
+.hero-name{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2.6rem,5.5vw,4.8rem);
+  font-weight:900;color:var(--txt-bright);
+  line-height:1.05;letter-spacing:-.02em;
+  margin-bottom:.7rem;
+  position:relative;
+}
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{
+  content:attr(data-text);
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+}
+.glitch::before{
+  color:var(--cyan);
+  clip-path:polygon(0 0,100% 0,100% 38%,0 38%);
+  animation:g1 5s infinite;opacity:.35;
+}
+.glitch::after{
+  color:var(--orange);
+  clip-path:polygon(0 62%,100% 62%,100% 100%,0 100%);
+  animation:g2 5s infinite;opacity:.35;
+}
+@keyframes g1{0%,88%,100%{transform:translate(0)} 90%{transform:translate(-3px,1px)} 92%{transform:translate(2px,-1px)} 94%{transform:translate(-1px,2px)}}
+@keyframes g2{0%,85%,100%{transform:translate(0)} 87%{transform:translate(3px,-1px)} 89%{transform:translate(-2px,1px)} 91%{transform:translate(1px,-2px)}}
+
+.hero-typed{
+  font-family:'Share Tech Mono',monospace;
+  font-size:1.05rem;
+  margin-bottom:1.6rem;
+  min-height:1.6em;
+  color:var(--txt);
+}
+.typed-prefix{color:var(--txt-dim)}
+.typed-text{color:var(--cyan)}
+.typed-cursor{
+  border-right:2px solid var(--cyan);
+  animation:blink .75s step-end infinite;
+}
+@keyframes blink{50%{border-color:transparent}}
+
+.hero-bio{
+  color:var(--txt-dim);font-size:1rem;
+  max-width:500px;margin-bottom:2.5rem;
+  font-weight:400;line-height:1.8;
+}
+.hero-bio strong{color:var(--txt);font-weight:600}
+
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+
+.btn-primary{
+  padding:.7rem 1.8rem;
+  background:var(--cyan);color:var(--bg);
+  font-family:'Orbitron',monospace;
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;
+  text-decoration:none;border:none;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition:all .2s;cursor:none;
+}
+.btn-primary:hover{background:var(--txt-bright);box-shadow:0 0 22px rgba(0,212,255,0.45)}
+
+.btn-outline{
+  padding:.7rem 1.8rem;
+  background:transparent;
+  border:1px solid var(--border2);
+  color:var(--txt);
+  font-family:'Share Tech Mono',monospace;
+  font-size:.78rem;letter-spacing:.1em;
+  text-decoration:none;
+  transition:all .2s;cursor:none;
+}
+.btn-outline:hover{border-color:var(--txt-dim);color:var(--txt-bright)}
+
+/* Hero photo */
+.hero-photo{
+  width:280px;height:340px;
+  background:var(--surf2);
+  border:1px solid var(--border2);
+  position:relative;overflow:hidden;
+  flex-shrink:0;
+  align-self:center;
+}
+.hero-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top;
+  display:block;
+}
+.photo-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(3,8,16,0.6) 100%);
+  pointer-events:none;
+}
+.photo-corner{
+  position:absolute;width:14px;height:14px;
+  border-color:var(--cyan);border-style:solid;
+}
+.pc-tl{top:9px;left:9px;border-width:2px 0 0 2px}
+.pc-tr{top:9px;right:9px;border-width:2px 2px 0 0}
+.pc-bl{bottom:9px;left:9px;border-width:0 0 2px 2px}
+.pc-br{bottom:9px;right:9px;border-width:0 2px 2px 0}
+.photo-placeholder{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.75rem;
+}
+.photo-placeholder-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
+.photo-placeholder-icon svg{width:36px;height:36px;opacity:.35;fill:var(--txt-dim)}
+.photo-placeholder-text{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--txt-dim);
+  letter-spacing:.25em;text-transform:uppercase;
+}
+
+/* Hero stats */
+.hero-stats{
+  display:flex;gap:3rem;
+  margin-top:3rem;padding-top:2rem;
+  border-top:1px solid var(--border);
+}
+.stat-v{
+  font-family:'Orbitron',monospace;
+  font-size:1.4rem;font-weight:700;color:var(--cyan);
+}
+.stat-l{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--txt-dim);
+  letter-spacing:.15em;text-transform:uppercase;
+  margin-top:.15rem;
+}
+
+/* ─── SECTION BASE ─── */
+section{position:relative;z-index:1;padding:6rem 2.5rem}
+.sec-inner{max-width:1140px;margin:0 auto}
+.sec-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;color:var(--cyan);
+  letter-spacing:.35em;text-transform:uppercase;
+  margin-bottom:.7rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.sec-label::before{content:'//';opacity:.45}
+.sec-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.7rem,3.5vw,2.6rem);
+  font-weight:700;color:var(--txt-bright);
+  margin-bottom:3.5rem;
+}
+
+/* ─── ABOUT ─── */
+#about{background:var(--surf)}
+.about-grid{
+  display:grid;
+  grid-template-columns:3fr 2fr;
+  gap:4rem;align-items:start;
+}
+.about-text p{
+  color:var(--txt-dim);font-size:1.03rem;
+  line-height:1.85;margin-bottom:1.1rem;
+}
+.about-text p strong{color:var(--txt);font-weight:600}
+.about-details{display:flex;flex-direction:column;gap:.75rem}
+.det{
+  display:flex;align-items:center;gap:1rem;
+  padding:.7rem 1rem;
+  background:var(--surf2);
+  border:1px solid var(--border);
+  border-left:2px solid var(--cyan);
+}
+.det-lbl{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--txt-dim);
+  letter-spacing:.15em;text-transform:uppercase;
+  min-width:90px;
+}
+.det-val{color:var(--txt);font-size:.9rem;font-weight:500}
+
+/* ─── PROJECTS ─── */
+#projects{}
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1.5rem;
+}
+.pcard{
+  background:var(--surf);
+  border:1px solid var(--border);
+  padding:1.8rem 2rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  cursor:none;
+}
+.pcard::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:var(--cc,var(--cyan));
+  opacity:0;transition:opacity .3s;
+}
+.pcard:hover{
+  transform:translateY(-5px);
+  border-color:var(--cc,var(--cyan));
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);
+}
+.pcard:hover::before{opacity:1}
+
+/* Background hex pattern per card */
+.pcard::after{
+  content:'';
+  position:absolute;right:-30px;bottom:-30px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,var(--cc-dim,var(--cyan-dim)) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.pcard.featured{
+  grid-column:span 2;
+  display:grid;
+  grid-template-columns:3fr 2fr;
+  gap:2rem;
+}
+
+.pc-tag{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.2rem .7rem;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;
+  border:1px solid var(--cc,var(--cyan));
+  color:var(--cc,var(--cyan));
+  margin-bottom:1.1rem;
+}
+.pc-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--cc,var(--cyan));
+}
+
+.pc-name{
+  font-family:'Orbitron',monospace;
+  font-size:1.15rem;font-weight:700;
+  color:var(--txt-bright);
+  margin-bottom:.5rem;
+}
+.pc-desc{
+  color:var(--txt-dim);font-size:.95rem;
+  line-height:1.75;margin-bottom:1.4rem;
+}
+.pc-chips{
+  display:flex;flex-wrap:wrap;gap:.4rem;
+  margin-bottom:1.4rem;
+}
+.chip{
+  background:var(--surf2);
+  border:1px solid var(--border);
+  padding:.18rem .6rem;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--txt-dim);
+  letter-spacing:.08em;
+}
+.pc-link{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.75rem;color:var(--cc,var(--cyan));
+  text-decoration:none;letter-spacing:.08em;
+  transition:opacity .2s;
+}
+.pc-link::before{content:'→ '}
+.pc-link:hover{opacity:.7}
+
+/* CPU progress tracker */
+.cpu-prog{
+  background:var(--surf2);
+  border:1px solid var(--border);
+  padding:1.2rem;
+  align-self:start;
+}
+.cp-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--txt-dim);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:.85rem;
+  padding-bottom:.5rem;
+  border-bottom:1px solid var(--border);
+}
+.cp-item{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.4rem 0;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.78rem;
+}
+.cp-item:not(:last-child){border-bottom:1px solid rgba(19,35,58,.6)}
+.cp-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cp-item.done .cp-d{background:var(--green);box-shadow:0 0 7px var(--green)}
+.cp-item.pending .cp-d{background:var(--border2);border:1px solid var(--txt-dim)}
+.cp-item.done{color:var(--txt)}
+.cp-item.pending{color:var(--txt-dim)}
+.cp-badge{
+  margin-left:auto;
+  font-size:.58rem;letter-spacing:.15em;
+  padding:.1rem .45rem;
+}
+.cp-item.done .cp-badge{
+  background:rgba(16,217,138,.1);
+  border:1px solid rgba(16,217,138,.25);
+  color:var(--green);
+}
+.cp-item.pending .cp-badge{
+  background:var(--border);
+  border:1px solid var(--border2);
+  color:var(--txt-dim);
+}
+
+/* ─── SKILLS ─── */
+#skills{background:var(--surf)}
+.sk-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.2rem;
+}
+.sk-group{
+  background:var(--surf2);
+  border:1px solid var(--border);
+  padding:1.5rem;
+  position:relative;overflow:hidden;
+}
+.sk-group::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:var(--gc);
+}
+.skg-title{
+  font-family:'Orbitron',monospace;
+  font-size:.7rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:1rem;padding-bottom:.75rem;
+  border-bottom:1px solid var(--border);
+  color:var(--gc);
+}
+.sk-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.sk-list li{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.78rem;color:var(--txt-dim);
+  display:flex;align-items:center;gap:.6rem;
+}
+.sk-list li::before{content:'▸';font-size:.65rem;color:var(--txt-dim);opacity:.7}
+
+/* ─── ROBOT SECTION (extra project callout) ─── */
+.robot-banner{
+  margin-top:1.5rem;
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-left:3px solid var(--green);
+  padding:1.5rem 2rem;
+  display:flex;align-items:center;gap:2rem;
+}
+.rb-icon{
+  font-size:2.4rem;flex-shrink:0;
+}
+.rb-content{}
+.rb-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--green);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:.3rem;
+}
+.rb-name{
+  font-family:'Orbitron',monospace;
+  font-size:1rem;font-weight:700;
+  color:var(--txt-bright);margin-bottom:.4rem;
+}
+.rb-desc{
+  color:var(--txt-dim);font-size:.9rem;
+  line-height:1.7;
+}
+
+/* ─── CONTACT / FOOTER ─── */
+#contact{border-top:1px solid var(--border)}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:start;
+}
+.contact-text h3{
+  font-family:'Orbitron',monospace;
+  font-size:1.4rem;font-weight:700;
+  color:var(--txt-bright);margin-bottom:1rem;
+}
+.contact-text p{
+  color:var(--txt-dim);font-size:1rem;
+  line-height:1.8;margin-bottom:2rem;
+}
+.contact-links{display:flex;flex-direction:column;gap:.85rem}
+.clink{
+  display:flex;align-items:center;gap:.9rem;
+  padding:.85rem 1.1rem;
+  background:var(--surf);
+  border:1px solid var(--border);
+  text-decoration:none;
+  transition:border-color .2s,background .2s;
+  cursor:none;
+}
+.clink:hover{
+  border-color:var(--cc,var(--cyan));
+  background:var(--surf2);
+}
+.clink-icon{
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surf2);
+  border:1px solid var(--border);
+  flex-shrink:0;
+}
+.clink-icon svg{width:18px;height:18px;fill:var(--cc,var(--cyan))}
+.clink-info{}
+.clink-lbl{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.62rem;color:var(--txt-dim);
+  letter-spacing:.15em;text-transform:uppercase;
+}
+.clink-val{
+  font-family:'Rajdhani',sans-serif;
+  font-size:.95rem;font-weight:600;
+  color:var(--txt);margin-top:.1rem;
+}
+
+footer{
+  position:relative;z-index:1;
+  padding:2rem 2.5rem;
+  border-top:1px solid var(--border);
+  background:var(--surf);
+}
+.ft-inner{
+  max-width:1140px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ft-brand{
+  font-family:'Orbitron',monospace;
+  font-size:.8rem;color:var(--txt-dim);
+}
+.ft-brand span{color:var(--cyan)}
+.ft-note{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.68rem;color:var(--txt-dim);
+  letter-spacing:.1em;
+}
+.ft-note a{color:var(--txt-dim);text-decoration:none}
+.ft-note a:hover{color:var(--cyan)}
+
+/* ─── REVEAL ANIMATION ─── */
+.reveal{
+  opacity:0;transform:translateY(22px);
+  transition:opacity .65s ease,transform .65s ease;
+}
+.reveal.vis{opacity:1;transform:none}
+
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-photo{display:none}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem}
+  .proj-grid{grid-template-columns:1fr}
+  .pcard.featured{grid-column:span 1;grid-template-columns:1fr}
+  .sk-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+  .ft-inner{flex-direction:column;gap:1rem;text-align:center}
+  .hero-stats{gap:1.8rem}
+  .robot-banner{flex-direction:column;gap:1rem}
+}
+@media(max-width:500px){
+  nav{padding:.9rem 1.2rem}
+  section{padding:4rem 1.2rem}
+  #hero{padding:6rem 1.2rem 3rem}
+  .sk-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cur-dot" id="cd"></div>
+<div class="cur-ring" id="cr"></div>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#hero" class="nav-logo">U<em>P</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://github.com/umeshchess" class="nav-gh" target="_blank">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    GitHub
+  </a>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <p class="hero-label reveal">B.Tech EEE · JNTUACEK · Andhra Pradesh</p>
+      <h1 class="hero-name reveal">
+        <span class="glitch" data-text="UMESH">UMESH</span><br>
+        <span class="glitch" data-text="PENKEY" style="color:var(--cyan)">PENKEY</span>
+      </h1>
+      <p class="hero-typed reveal">
+        <span class="typed-prefix">$ specialisation — </span><span class="typed-text" id="typed"></span><span class="typed-cursor"> </span>
+      </p>
+      <p class="hero-bio reveal">
+        <strong>Electro Surgeon</strong> crafting silicon from scratch. Building an 8-bit CPU in Verilog, breaking CTF challenges, and exploring quantum superposition — all from a <strong>Fedora + Hyprland</strong> rig in Andhra Pradesh. Future: <strong>VLSI engineer → Hardware Security → Quantum</strong>.
+      </p>
+      <div class="hero-cta reveal">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="stat-item">
+          <span class="stat-v">8-bit</span>
+          <span class="stat-l">CPU Design</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-v">7</span>
+          <span class="stat-l">CTF Levels</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-v">3</span>
+          <span class="stat-l">GitHub Repos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-v">∞</span>
+          <span class="stat-l">Curiosity</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo placeholder -->
+    <div class="hero-photo reveal">
+      <!-- SWAP: replace everything inside this div with <img src="your-photo.jpg" alt="Umesh Penkey"> -->
+      <div class="photo-placeholder">
+        <div class="photo-placeholder-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </div>
+        <span class="photo-placeholder-text">[ your photo ]</span>
+      </div>
+      <div class="photo-overlay"></div>
+      <div class="photo-corner pc-tl"></div>
+      <div class="photo-corner pc-tr"></div>
+      <div class="photo-corner pc-bl"></div>
+      <div class="photo-corner pc-br"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="sec-inner">
+    <p class="sec-label reveal">01 // Profile</p>
+    <h2 class="sec-title reveal">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a <strong>3rd-year Electrical and Electronics Engineering student</strong> at JNTU Kalikiri (JNTUACEK) with a clear trajectory: VLSI design first, then hardware security, then quantum. I don't spread thin — I go deep.</p>
+        <p>My flagship project is the <strong>Chameleon CPU</strong>, an 8-bit processor being built from first principles in Logisim Evolution and Verilog. The ALU is complete with 17 operations, carry lookahead logic, and full flag generation. Registers and control unit are next.</p>
+        <p>On the security side, I've completed all 7 levels of <strong>OverTheWire Leviathan</strong> — SUID exploitation, symlink attacks, binary analysis with ltrace, and bash-scripted brute force. TryHackMe and HackTheBox form my ongoing training ground.</p>
+        <p>Quantum computing lives in <strong>Q-Circuits</strong>, where I explore GHZ states, Bell states, and Dirac notation — connecting quantum gates to classical CMOS logic from an EEE perspective.</p>
+      </div>
+      <div class="about-details reveal">
+        <div class="det"><span class="det-lbl">College</span><span class="det-val">JNTUACEK, Chittoor</span></div>
+        <div class="det"><span class="det-lbl">Degree</span><span class="det-val">B.Tech EEE (3rd Year)</span></div>
+        <div class="det"><span class="det-lbl">Goal</span><span class="det-val">VLSI Engineer</span></div>
+        <div class="det"><span class="det-lbl">Domain</span><span class="det-val">umesh.qd.je</span></div>
+        <div class="det"><span class="det-lbl">OS</span><span class="det-val">Fedora + Hyprland</span></div>
+        <div class="det"><span class="det-lbl">Shell</span><span class="det-val">Fish</span></div>
+        <div class="det"><span class="det-lbl">Type</span><span class="det-val">INTJ</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+  <div class="sec-inner">
+    <p class="sec-label reveal">02 // Work</p>
+    <h2 class="sec-title reveal">Projects</h2>
+
+    <div class="proj-grid">
+
+      <!-- CHAMELEON CPU — FEATURED -->
+      <div class="pcard featured reveal" style="--cc:var(--cyan);--cc-dim:var(--cyan-dim)">
+        <div class="pcard-main">
+          <div class="pc-tag"><span class="pc-dot"></span>VLSI · Verilog</div>
+          <h3 class="pc-name">🦎 Chameleon CPU</h3>
+          <p class="pc-desc">An 8-bit CPU built from scratch. The ALU is fully operational with 17 operations across a 5-bit OpCode — arithmetic, logic, shifts, rotates, and full flag generation (Zero, Negative, Overflow, Carry). Currently building out the register file, control unit, and program counter. Simulated in Logisim Evolution and verified in GTKWave.</p>
+          <div class="pc-chips">
+            <span class="chip">Verilog</span>
+            <span class="chip">Logisim Evolution</span>
+            <span class="chip">Icarus Verilog</span>
+            <span class="chip">GTKWave</span>
+            <span class="chip">CLA Adder</span>
+            <span class="chip">5-bit OpCode</span>
+          </div>
+          <a href="https://github.com/umeshchess/Chameleon-CPU" class="pc-link" target="_blank">View on GitHub</a>
+        </div>
+        <div class="cpu-prog">
+          <p class="cp-title">Build Progress</p>
+          <div class="cp-item done">
+            <span class="cp-d"></span>
+            ALU — 17 Operations
+            <span class="cp-badge">DONE</span>
+          </div>
+          <div class="cp-item pending">
+            <span class="cp-d"></span>
+            Register File
+            <span class="cp-badge">NEXT</span>
+          </div>
+          <div class="cp-item pending">
+            <span class="cp-d"></span>
+            Control Unit
+            <span class="cp-badge">TODO</span>
+          </div>
+          <div class="cp-item pending">
+            <span class="cp-d"></span>
+            Program Counter
+            <span class="cp-badge">TODO</span>
+          </div>
+          <div class="cp-item pending">
+            <span class="cp-d"></span>
+            Full CPU Integration
+            <span class="cp-badge">TODO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTF WRITEUPS -->
+      <div class="pcard reveal" style="--cc:var(--orange);--cc-dim:var(--orange-dim)">
+        <div class="pc-tag"><span class="pc-dot" style="background:var(--orange)"></span>Cybersecurity</div>
+        <h3 class="pc-name">🔐 CTF Writeups</h3>
+        <p class="pc-desc">Full writeup series for OverTheWire: Leviathan — all 7 levels completed. Covers Linux privilege escalation, SUID binary exploitation, symlink attacks, ltrace-based binary analysis, bash brute-forcing, and binary-to-ASCII decoding.</p>
+        <div class="pc-chips">
+          <span class="chip">Linux PrivEsc</span>
+          <span class="chip">SUID Exploit</span>
+          <span class="chip">ltrace</span>
+          <span class="chip">Symlink Attack</span>
+          <span class="chip">Bash</span>
+          <span class="chip">OverTheWire</span>
+        </div>
+        <a href="https://github.com/umeshchess/CTF-Writeups" class="pc-link" style="color:var(--orange)" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- Q-CIRCUITS -->
+      <div class="pcard reveal" style="--cc:var(--purple);--cc-dim:var(--purple-dim)">
+        <div class="pc-tag"><span class="pc-dot" style="background:var(--purple)"></span>Quantum Computing</div>
+        <h3 class="pc-name">⚛️ Q-Circuits</h3>
+        <p class="pc-desc">My quantum computing exploration. Implements a 4-qubit GHZ state demonstrating maximal entanglement, Bell state experiments, and Dirac/bra-ket notation analysis. Bridges quantum gate theory with classical VLSI design principles.</p>
+        <div class="pc-chips">
+          <span class="chip">Quirk Simulator</span>
+          <span class="chip">GHZ State</span>
+          <span class="chip">Bell States</span>
+          <span class="chip">Dirac Notation</span>
+          <span class="chip">Qiskit (planned)</span>
+        </div>
+        <a href="https://github.com/umeshchess/Q-Circuits" class="pc-link" style="color:var(--purple)" target="_blank">View on GitHub</a>
+      </div>
+
+    </div>
+
+    <!-- AI Robot Banner -->
+    <div class="robot-banner reveal" style="margin-top:1.5rem;">
+      <div class="rb-icon">🤖</div>
+      <div class="rb-content">
+        <p class="rb-label" style="color:var(--green)">Embedded · AI</p>
+        <p class="rb-name">AI Detection Robot</p>
+        <p class="rb-desc">ESP32-CAM based Wi-Fi controlled detection robot with L298N motor driver, dual BO motors, and MG90S servo for pan/tilt. Live camera feed streamed over Wi-Fi with GPIO-mapped movement control. Built on a USB power bank.</p>
+        <div class="pc-chips" style="margin-top:.75rem;margin-bottom:0">
+          <span class="chip">ESP32-CAM</span>
+          <span class="chip">L298N</span>
+          <span class="chip">MG90S Servo</span>
+          <span class="chip">BO Motors</span>
+          <span class="chip">Wi-Fi Control</span>
+          <span class="chip">C++/Arduino</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SKILLS ─── -->
+<section id="skills">
+  <div class="sec-inner">
+    <p class="sec-label reveal">03 // Toolkit</p>
+    <h2 class="sec-title reveal">Skills</h2>
+    <div class="sk-grid">
+      <div class="sk-group reveal" style="--gc:var(--cyan)">
+        <p class="skg-title">Hardware Design</p>
+        <ul class="sk-list">
+          <li>Verilog HDL</li>
+          <li>Logisim Evolution</li>
+          <li>Icarus Verilog</li>
+          <li>GTKWave</li>
+          <li>CPU Architecture</li>
+          <li>ALU Design</li>
+          <li>CLA Adder</li>
+        </ul>
+      </div>
+      <div class="sk-group reveal" style="--gc:var(--orange)">
+        <p class="skg-title">Cybersecurity</p>
+        <ul class="sk-list">
+          <li>Linux Exploitation</li>
+          <li>SUID / PrivEsc</li>
+          <li>Binary Analysis</li>
+          <li>ltrace / strace</li>
+          <li>Symlink Attacks</li>
+          <li>CTF Challenges</li>
+          <li>HackTheBox / THM</li>
+        </ul>
+      </div>
+      <div class="sk-group reveal" style="--gc:var(--purple)">
+        <p class="skg-title">Quantum</p>
+        <ul class="sk-list">
+          <li>Quantum Gates</li>
+          <li>GHZ / Bell States</li>
+          <li>Dirac Notation</li>
+          <li>Bloch Sphere</li>
+          <li>Quirk Simulator</li>
+          <li>Qiskit (learning)</li>
+          <li>Bra-ket Algebra</li>
+        </ul>
+      </div>
+      <div class="sk-group reveal" style="--gc:var(--green)">
+        <p class="skg-title">Systems</p>
+        <ul class="sk-list">
+          <li>Fedora Linux</li>
+          <li>Hyprland WM</li>
+          <li>Fish Shell</li>
+          <li>Python</li>
+          <li>C / C++</li>
+          <li>ESP32 / Arduino</li>
+          <li>Git / GitHub</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="sec-inner">
+    <p class="sec-label reveal">04 // Connect</p>
+    <h2 class="sec-title reveal">Get in Touch</h2>
+    <div class="contact-grid">
+      <div class="contact-text reveal">
+        <h3>Let's talk hardware.</h3>
+        <p>Interested in VLSI, hardware security, embedded systems, or quantum? Open to collaborations, mentorship, and connecting with people building at the silicon level.</p>
+        <p style="font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--txt-dim);letter-spacing:.08em">
+          Available for internships, research collaborations, and open-source projects.
+        </p>
+      </div>
+      <div class="contact-links reveal">
+        <a href="https://github.com/umeshchess" class="clink" style="--cc:var(--cyan)" target="_blank">
+          <div class="clink-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </div>
+          <div class="clink-info">
+            <p class="clink-lbl">GitHub</p>
+            <p class="clink-val">github.com/umeshchess</p>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/umesh-penkey" class="clink" style="--cc:#0a66c2" target="_blank">
+          <div class="clink-icon" style="border-color:rgba(10,102,194,.3)">
+            <svg viewBox="0 0 24 24" fill="#0a66c2" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          <div class="clink-info">
+            <p class="clink-lbl">LinkedIn</p>
+            <p class="clink-val">linkedin.com/in/umesh-penkey</p>
+          </div>
+        </a>
+        <!-- UPDATE: replace with your actual email -->
+        <a href="mailto:umesh@umesh.qd.je" class="clink" style="--cc:var(--orange)">
+          <div class="clink-icon" style="border-color:rgba(255,107,53,.2)">
+            <svg viewBox="0 0 24 24" fill="var(--orange)" xmlns="http://www.w3.org/2000/svg"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.867.662-1.567 1.506-1.617L12 10.45l10.494-6.61C23.338 3.89 24 4.59 24 5.457z"/></svg>
+          </div>
+          <div class="clink-info">
+            <p class="clink-lbl">Email</p>
+            <p class="clink-val">umesh@umesh.qd.je</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="ft-inner">
+    <p class="ft-brand">
+      <span>UMESH PENKEY</span> · Built with intention
+    </p>
+    <p class="ft-note">
+      <a href="https://umesh.qd.je">umesh.qd.je</a> · 
+      <a href="https://github.com/umeshchess" target="_blank">@umeshchess</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+// ─── CURSOR ───
+const cd = document.getElementById('cd');
+const cr = document.getElementById('cr');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+function animCursor() {
+  cd.style.left = mx + 'px';
+  cd.style.top  = my + 'px';
+  rx += (mx - rx) * 0.14;
+  ry += (my - ry) * 0.14;
+  cr.style.left = rx + 'px';
+  cr.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+// ─── TYPED ANIMATION ───
+const roles = [
+  'VLSI Engineer',
+  'Hardware Hacker',
+  'Quantum Explorer',
+  'CPU Architect',
+  'Electro Surgeon',
+];
+let ri = 0, ci = 0, deleting = false, pause = false;
+const el = document.getElementById('typed');
+
+function type() {
+  if (pause) { setTimeout(type, 1600); pause = false; return; }
+  const word = roles[ri];
+  if (!deleting) {
+    el.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { deleting = true; pause = true; }
+    setTimeout(type, 95);
+  } else {
+    el.textContent = word.slice(0, --ci);
+    if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+    setTimeout(type, 50);
+  }
+}
+type();
+
+// ─── SCROLL REVEAL ───
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); } });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.08 + 's';
+  obs.observe(el);
+});
+
+// ─── SMOOTH ANCHOR NAV ───
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
